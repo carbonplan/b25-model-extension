@@ -1,0 +1,11 @@
+# Is the mineralogy weight w a property of the SOURCE STATE?
+# drv=6 gave w = 0.779830 for Virginia. If w is the cluster sample-count
+# weighting behind Extended Data Fig. 3, every driver cluster sourcing Virginia
+# must return the same value.
+#   drv=67 -- different cluster, SAME start year: isolates the cluster question
+#   drv=19 -- different cluster AND start year: also exercises driver slicing
+# drv basalt      start tf exp
+67  Virginia_1    2043  5  E0
+67  Virginia_2    2043  5  E0
+19  Virginia_1    2032  5  E0
+19  Virginia_2    2032  5  E0

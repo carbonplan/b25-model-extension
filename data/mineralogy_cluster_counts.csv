@@ -1,0 +1,27 @@
+# mineralogy_cluster_counts.csv,,,,
+#,,,,
+# Number of data points ssigned to each of the two mineralogy clusters per,,,,
+# supply state and the associated mixing weight (w=n1/(n1+n2)),,,,
+#,,,,
+# PROVENANCE ,,,,
+#   These values were transcribed by hand from extended data Fig. 3,,,,
+# because we could not find the data otherwise listed in the output files. ,,,,
+#,,,,
+#  Confirmed that n_1 + n_2 == n_total ; and w == n_1/(n_1+n_2),,,,
+#  The resulting weights reproduce the empirically-derived weights by comparison to published data.,,,,
+#,,,,
+# Read with:  pd.read_csv(path, comment='#'),,,
+state,n_1,n_2,n_total,w
+New Jersey,182,112,294,0.619048
+Virginia,170,48,218,0.779817
+Oregon,291,842,1133,0.25684
+North Carolina,318,25,343,0.927114
+Washington,108,459,567,0.190476
+Connecticut,105,60,165,0.636364
+California,408,642,1050,0.388571
+Massachusetts,23,7,30,0.766667
+Pennsylvania,267,40,307,0.869707
+Idaho,172,251,423,0.406619
+Wisconsin,11,2,13,0.846154
+Minnesota,73,15,88,0.829545
+Michigan,31,41,72,0.430556

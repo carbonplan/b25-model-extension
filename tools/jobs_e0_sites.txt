@@ -1,0 +1,20 @@
+# E0 at the six representative sites, both mineralogy clusters, native deployment
+# windows. 12 runs, 354 simulated years total.
+#
+# ORDERED LONGEST-FIRST on purpose. xargs -P hands out lines in order, so a 45-yr
+# job started last would run alone after everything else finished and dominate the
+# makespan. Longest-processing-time-first keeps the workers busy to the end.
+#
+# drv basalt            start  tf  exp
+180  Minnesota_1         2026  45  E0
+180  Minnesota_2         2026  45  E0
+214  Minnesota_1         2035  36  E0
+214  Minnesota_2         2035  36  E0
+6    Virginia_1          2043  28  E0
+6    Virginia_2          2043  28  E0
+390  North_Carolina_1    2043  28  E0
+390  North_Carolina_2    2043  28  E0
+162  Wisconsin_1         2046  25  E0
+162  Wisconsin_2         2046  25  E0
+276  Oregon_1            2056  15  E0
+276  Oregon_2            2056  15  E0

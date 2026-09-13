@@ -1,0 +1,6 @@
+
+format = 'doc';
+mydoc = publish('make_basalt_elements_pic_portrait','format',format,'showCode',false);
+copyfile(['html/make_basalt_elements_pic_portrait.',format], ...
+ [format,'/','table_',params.name,'_',num2str(iSite),'_', ...
+ num2str(run_params.p80),'_',num2str(run_params.tf),'.',format])

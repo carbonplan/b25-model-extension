@@ -1,0 +1,24 @@
+[workspace]
+name = "beerling-2025-model-extension"
+description = "Python analysis + dispatch layer for the Octave weathering model"
+channels = ["conda-forge"]
+platforms = ["osx-arm64"]
+
+# The model itself runs under Octave (brew install octave), not pixi.
+# Everything here is the Python side: comparison scripts, job generation,
+# and the Coiled batch submitter.
+[dependencies]
+python = "3.12.*"
+numpy = "*"
+scipy = "*"
+pandas = "*"
+boto3 = "*"
+ipykernel = "*"
+
+[pypi-dependencies]
+coiled = "*"
+
+[tasks]
+compare = "python tools/compare_to_published.py"
+weight = "python tools/mineralogy_weight.py"
+submit = "python tools/coiled/submit.py"

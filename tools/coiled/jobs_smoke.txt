@@ -1,0 +1,10 @@
+# Smoke test for the Coiled path. Deliberately NOT a new science run: this is the
+# cluster-6 Virginia pair that E0 was validated on locally (scratch-results.md §2),
+# so the cloud result has an exact local counterpart to diff against with
+# tools/coiled/compare_runs.py before any real batch is submitted.
+#
+# 2 jobs, 10 simulated years, ~25 min on one VM.
+#
+# drv basalt      start  tf  exp
+6    Virginia_1    2043   5  E0
+6    Virginia_2    2043   5  E0
