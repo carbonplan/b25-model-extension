@@ -33,8 +33,9 @@ diff upstream/weathering_model/particle_weathering_300123/solution2pH.m src/shim
 | | pH relation | Calcite ceiling | Purpose |
 |---|---|---|---|
 | **E0** | buffered | buffered | The published configuration — validates the harness |
-| **E1** | buffered | thermodynamic | Calcite ceiling only; pH and kinetics identical to E0 |
-| **E2** | thermodynamic | thermodynamic | Full carbonate closure |
+
+A companion repo (`beerling-2025-analysis`) uses the **E1** and **E2** experiments, 
+but these do not require new runs. They are postprocessed on E0.
 
 ## Status
 

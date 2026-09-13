@@ -144,7 +144,7 @@ physics. We were unable to reproduce these configurations with the released code
 
 ## B. Files we had to OVERRIDE
 
-### B1. `mod5.m` — 3 hunks, 10 upstream lines replaced
+### B1. `mod5.m` — 2 hunks, 11 upstream lines replaced
 
 `diff upstream/weathering_model/mod5.m src/shim/mod5.m`
 
@@ -190,13 +190,6 @@ grid vector with an extra node carrying the edge slope.
 
 *Significance: high risk if skipped, zero scientific change given our validation.*
 
-**(iii) The experiment switch (an addition, not a replacement).** Upstream
-hard-codes `run_params.buffer = 'yes'` and couples the pH relation to the
-calcite ceiling in a single `if/else`. We split them so E1 can move the ceiling
-while leaving pH — and therefore the dissolution kinetics in `comp_k` —
-bit-identical to E0. Selected by `inps.experiment`; defaults to `'E0'`, which
-reproduces upstream behaviour exactly. See [section F](#f-the-experiments).
-
 ### B2. `run_simple4.m` — 2 hunks, 72 lines added, 1 upstream line replaced
 
 `diff upstream/weathering_model/particle_weathering_300123/run_simple4.m src/shim/run_simple4.m`
@@ -227,7 +220,7 @@ simulated year), 31 depth nodes over 0–0.15 m:
 | `pH` | 31 × nt | native-resolution profile (before the monthly re-interp) |
 | `pH_avg` | 1 × nt | 0–15 cm column mean — the published reduction |
 | `Ca_sol` | 31 × nt | dissolved Ca, mol/L |
-| `Ca_sat` | 31 × nt | Ca at calcite saturation — **buffered or thermodynamic per experiment** |
+| `Ca_sat` | 31 × nt | Ca at calcite saturation — the model's buffered ceiling |
 | `Ca_precip` | 31 × nt | precipitated Ca (SIC), mol/L |
 | `H_sol` | 31 × nt | nitrification acidity |
 | `alk` | 9 × 31 × nt | the full alkalinity budget, rows per `calc_pH.m:18`: `[alk, alk0, −alk_acid, N_alk, 2Ca, 2Mg, K, Na, CO2]` |
@@ -416,13 +409,20 @@ carry each cell's `bas` and `yy` directly.
 
 ## F. The experiments
 
-Selected by `inps.experiment` in `src/shim/mod5.m`.
+The harness runs one configuration, **E0**: the published model, with the buffered
+(Nelson & Su) pH relation and the buffered calcite ceiling, exactly as upstream
+hard-codes them (`run_params.buffer = 'yes'`). `run_site`'s `'experiment'` option
+is a label and accepts only `'E0'`.
 
 | | pH relation | Calcite ceiling | What it is |
 |---|---|---|---|
 | **E0** | buffered (Nelson & Su sigmoid) | buffered | The published configuration. Validates the harness |
-| **E1** | buffered | thermodynamic | Calcite ceiling only. pH — and therefore `comp_k` — is bit-identical to E0, so any difference is attributable to one cause |
-| **E2** | thermodynamic | thermodynamic | Full carbonate closure |
+
+**E1** (the thermodynamic calcite ceiling, with E0's dissolution held fixed) and
+**E2** (the exported alkalinity capped at the modelled pH and soil pCO₂) are
+post-processes on E0's saved carbonate state — the fields B2 and B3 surface — and
+live in beerling-2025-analysis. Neither changes the model, so neither needs a run
+here.
 
 
 ---

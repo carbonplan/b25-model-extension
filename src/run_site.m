@@ -15,7 +15,8 @@ function out = run_site(drv, basalt, varargin)
 %           states. Confirmed against Data File S5 for all 26. See notes.md.
 %
 % Options
-%   'experiment'  'E0' (default) | 'E1' | 'E2'     see src/shim/mod5.m
+%   'experiment'  'E0' (default, and the only configuration). A label: stored in
+%                 the result, and the prefix run_one.sh gives the file
 %   'tf'          run length in years (default 51)
 %   'start_year'  first year of basalt application (default 2020). The drivers
 %                 are sliced from this year, which is what the published runs
@@ -31,6 +32,11 @@ for k = 1:2:numel(varargin)
     f = varargin{k};
     if ~isfield(opt, f), error('run_site:opt','Unknown option ''%s''.', f); end
     opt.(f) = varargin{k+1};
+end
+if ~strcmp(opt.experiment, 'E0')
+    error('run_site:experiment', ...
+        'Only E0 is run here (got ''%s''); E1 and E2 are post-processes on it.', ...
+        opt.experiment);
 end
 
 RECORD_START = 2020;   % first year of the CLM5 driver record in run_strc_6.mat
@@ -81,8 +87,6 @@ inps.co2    = double(dat.co2(sel)');
 inps.sr     = double(dat.sr(sel)');
 inps.wat    = double(dat.infil(sel)' / 1000);     % mm/month -> m/month
 inps.alk    = double(dat.N(:, sel)');             % months x 31 nodes
-
-inps.experiment = opt.experiment;                 % read by src/shim/mod5.m
 
 % ---- run ---------------------------------------------------------------
 global SHIM_OOR; SHIM_OOR = struct();

@@ -59,7 +59,7 @@ pH_avg_sim = sum(pH_t,1)/size(pH_t,1);
 % fd15 returns Ca_sol_t, Ca_sat_t, Ca_precip_t and the alkalinity budget; this
 % function captures all four (line 33) but returns only alk_sim, and mod5 then
 % discards even that with a `~`. Without them there is no way to evaluate Omega
-% at the model's own state, which is the whole point of the E0/E1/E2 ladder.
+% at the model's own state, which beerling-2025-analysis needs for E1 and E2.
 %
 % WHY THIS GOES IN `totals` RATHER THAN THE SIGNATURE
 %   Appending outputs looks tidier but cannot work. CDR2 is declared as output
@@ -82,13 +82,13 @@ totals.diag.pH_avg   = pH_avg_sim;     % 0-15 cm column mean -- run_simple4.m:39
                                        % the reduction the published pH series uses
 totals.diag.Ca_sol   = Ca_sol_t;       % 31 x nt, mol/L dissolved Ca
 totals.diag.Ca_sat   = Ca_sat_t;       % 31 x nt, mol/L Ca at calcite saturation
-                                       % (buffered or thermodynamic per experiment)
+                                       % (the model's buffered ceiling)
 totals.diag.Ca_precip= Ca_precip_t;    % 31 x nt, mol/L precipitated Ca (SIC)
 totals.diag.H_sol    = H_sol_t;        % 31 x nt, nitrification acidity
 totals.diag.q        = q_eff_t;        % 1 x nt, m/yr -- the EFFECTIVE post-bucket
                                        % flux that advects solutes and sets the
                                        % export, NOT raw infiltration. See
-                                       % src/shim/fd15.m. Needed by E3.
+                                       % src/shim/fd15.m. Needed by E1 and E2.
 % Per-mineral state, nmin x 31 x nt. Upstream computes both, uses them for the mass
 % balance, and returns neither. Units follow fd15.m:83 -- 'min is kg/m^3':
 %   B  undissolved mineral mass per bulk volume, kg/m^3

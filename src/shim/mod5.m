@@ -132,24 +132,6 @@ function [c2b_ratio,CO2_mass,Application_Basalt_mass,pH,K_mass,P_mass,CO2_mass_o
         % flowrate (m/yr)
         % npp, yield, soilresp (gC/yr)
 
-%% ---- ADDITION (beerling-2025-model-extension) --------------------------------
-% Experiment switch. Upstream hard-codes run_params.buffer = 'yes' above and
-% couples the pH relation to the calcite ceiling in one if/else. We split them
-% so E1 can move the ceiling while leaving pH -- and therefore the dissolution
-% kinetics in comp_k -- bit-identical to E0. See notes.md.
-%   E0  buffered pH  + buffered CaSat      = the published configuration
-%   E1  buffered pH  + thermodynamic CaSat = calcite ceiling only
-%   E2  thermo   pH  + thermodynamic CaSat = full carbonate closure
-        if isfield(inps,'experiment'), experiment = inps.experiment;
-        else,                          experiment = 'E0'; end
-        switch experiment
-          case 'E0', run_params.buffer = 'yes'; casat_src = 'buffered';
-          case 'E1', run_params.buffer = 'yes'; casat_src = 'thermo';
-          case 'E2', run_params.buffer = 'no';  casat_src = 'thermo';
-          otherwise, error('mod5:experiment','Unknown experiment ''%s''.',experiment);
-        end
-%% --------------------------------------------------------------------
-
         mnths = 12;
         data.time = 2000 + (1:12)/12;
 
@@ -241,15 +223,11 @@ function [c2b_ratio,CO2_mass,Application_Basalt_mass,pH,K_mass,P_mass,CO2_mass_o
         if strcmp(run_params.buffer,'yes')
           alk2pH = @alk2pH_buffer;
           pH2Alk = @pH2Alk_buffer;
-        else
-          alk2pH = alk2pH_theoretical;
-          pH2Alk = @pH2Alk_no_buffer;
-        end
-
-        if strcmp(casat_src,'buffered')
           d = load(fullfile(P.model,'CaSatBuffered_data.mat'));
           CaSat = mk_interp2d(d.CO2, d.delAlk, d.values, 'CaSatBuffered');
         else
+          alk2pH = alk2pH_theoretical;
+          pH2Alk = @pH2Alk_no_buffer;
           d = load(fullfile(P.model,'CaSatNotBuffered_data.mat'));
           CaSat = mk_interp2d(d.CO2, d.delAlk, d.values, 'CaSatNotBuffered');
         end

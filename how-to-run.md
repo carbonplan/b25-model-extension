@@ -95,7 +95,7 @@ o = run_site(drv, basalt, 'Name', value, ...);
 |---|---|
 | `drv` | Driver cluster, 1–437, indexing `mylist` in `run_strc_6.mat` |
 | `basalt` | e.g. `'Virginia_1'`. `_1` is the bytownite cluster, `_2` the labradorite one, in all 13 states |
-| `'experiment'` | `'E0'` (default), `'E1'`, `'E2'` |
+| `'experiment'` | `'E0'` (default, and the only configuration). Stored in the result as `experiment` |
 | `'tf'` | Run length in years (default 51) |
 | `'start_year'` | First year of application, default 2020. Drivers are sliced from here — the published runs did the same, and results are **not** time-shift invariant |
 | `'save_to'` | `.mat` path to write |
