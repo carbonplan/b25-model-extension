@@ -7,10 +7,9 @@ The repo tweaks the model in two ways. First, it updates it to run with Octave,
 an open-source alternative to Matlab. Second, it outputs more data than the original 
 code to facilitate certain analyses.
 
-A primary goal of the repo is to test whether the model breaks carbonate speciation. 
-Some of our preliminary analysis suggests that it did, but we had to invert for key 
-parameters that were not available in the data published from the Beerling et al. paper. 
-This repo lets us repeat the analysis on direct model outputs. 
+A primary goal of the repo is to test the model against carbonate closure. 
+Some of our preliminary analysis suggests that it may not close the carbonate system, 
+but it relied on assumptions about the model state. This repo lets us repeat the analysis on direct model outputs. 
 
 **A note on changes to the model:** We used Claude (Opus 4.8) to help us rewrite the 
 model for Octave and identify other necessary changes. We wanted to make sure Claude's
@@ -33,10 +32,10 @@ the change affect the geochemistry or not.
 - [Provenance](#provenance)
 - [Layout](#layout)
 - [Overriding the source code selectively](#overriding-the-source-code-selectively)
-- [A. Files that are MISSING from the deposit](#a-files-that-are-missing-from-the-deposit)
-- [B. Files we had to OVERRIDE](#b-files-we-had-to-override)
-- [C. Files we ADDED that have no upstream counterpart](#c-files-we-added-that-have-no-upstream-counterpart)
-- [D. Upstream bugs and traps we found but did NOT change](#d-upstream-bugs-and-traps-we-found-but-did-not-change)
+- [A. Files that are missing from the deposit](#a-files-that-are-missing-from-the-deposit)
+- [B. Files we had to override](#b-files-we-had-to-override)
+- [C. Files we added that have no upstream counterpart](#c-files-we-added-that-have-no-upstream-counterpart)
+- [D. Minor upstream bugs and traps we found but did NOT change](#d-minor-upstream-bugs-and-traps-we-found-but-did-not-change)
 - [E. Facts about the released data that the plan depends on](#e-facts-about-the-released-data-that-the-plan-depends-on)
 - [F. The experiments](#f-the-experiments)
 - [Status of the code](#status-of-the-code)
@@ -81,7 +80,7 @@ logs/                          per-job run logs
 ```
 
 `data/` is for values we transcribed ourselves. It is deliberately separate from
-`upstream/` (byte-identical deposit) and `src/` (code): everything in it is a
+`upstream/` (byte-identical deposit) and `src/` (code) because everything in it is a
 judgement call by us about what a published figure says, and has to be checkable
 as such.
 
@@ -96,10 +95,10 @@ upstream one, and `diff` between the two shows exactly what we changed.
 
 ---
 
-## A. Files that are MISSING from the deposit
+## A. Files that are missing from the deposit
 
 Five functions and one data directory are referenced by `fd15.m` but are not in
-Zenodo 10940280. There is no `PSD/` directory in the deposit at all.
+Zenodo 10940280. We did not find a `PSD/` directory in the deposit.
 
 | Missing | Called from | Our file | Reached in our runs? |
 |---|---|---|---|
@@ -142,7 +141,7 @@ physics. We were unable to reproduce these configurations with the released code
 
 ---
 
-## B. Files we had to OVERRIDE
+## B. Files we had to override
 
 ### B1. `mod5.m` — 2 hunks, 11 upstream lines replaced
 
@@ -175,7 +174,7 @@ deserialize.
 
 We rebuild the interpolants from the companion `*_data.mat` files using
 `src/shim/mk_interp2d.m`. We confirmed that **this is exact**: the authors'
-`make_gridded_interpolant_data.m` wrote those files *from* these same
+`make_gridded_interpolant_data.m` appears to have written those files from these same
 objects —
 
 ```matlab
@@ -207,9 +206,7 @@ state, which we need for our analysis. `run_simple4.m:39` also
 computes `pH_avg_sim` which we output.
 
 B2 also now requests three more outputs from `fd15` — `profiles_t`,
-`tolerences_t` and `q_eff_t`. The first two are not wanted for themselves; they
-simply have to be named to reach `q_eff_t` at position #22. See B3 for why that
-is only safe with the `fd15` override in place.
+`tolerences_t` and `q_eff_t`. 
 
 **Updated fields added to totals.diag**
 `totals.diag` now carries the following, on fd15's regular output grid (100 steps per
@@ -260,7 +257,7 @@ else
     q = (q*Delt - (soil_volume_capacity - swvf))/Delt;   % true drainage
 ```
 
-That post-bucket value is what advects every solute through `findiff` and what
+That post-bucket value advects every solute through `findiff` and
 accumulates the export at `fd15.m:492-496`. 
 
 *Significance: no change to any computed quantity. `q` was already being used by
@@ -285,7 +282,7 @@ branch is the only one ever taken; we call it directly.
 
 ---
 
-## C. Files we ADDED that have no upstream counterpart
+## C. Files we added that have no upstream counterpart
 
 | File | What it does | Significance |
 |---|---|---|
@@ -339,7 +336,7 @@ Addresses hard-coded paths and difference between upstream an shim.
 
 ---
 
-## D. Upstream bugs and traps we found but did NOT change
+## D. Minor upstream bugs and traps we found but did not change
 
 Recorded because they matter for interpretation. All minor and do not appear to affect results.
 
@@ -421,8 +418,7 @@ is a label and accepts only `'E0'`.
 **E1** (the thermodynamic calcite ceiling, with E0's dissolution held fixed) and
 **E2** (the exported alkalinity capped at the modelled pH and soil pCO₂) are
 post-processes on E0's saved carbonate state — the fields B2 and B3 surface — and
-live in beerling-2025-analysis. Neither changes the model, so neither needs a run
-here.
+live in b25-analysis. Neither changes the model, so we don't run either here.
 
 
 ---

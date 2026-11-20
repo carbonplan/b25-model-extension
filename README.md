@@ -1,9 +1,8 @@
-# beerling-2025-model-extension
+# b25-model-extension
 
 Re-running the per-cell weathering model from **Beerling et al. (2025)**, 
 Nature ([doi:10.1038/s41586-024-08429-2](https://doi.org/10.1038/s41586-024-08429-2)),
-to test whether its empirical soil-pH buffer breaks carbonate speciation — and
-by how much that changes the published CDR.
+to test the effect of the whether empirical soil-pH buffer on carbonate speciation and CDR.
 
 
 ## Our main constraint
@@ -32,9 +31,9 @@ diff upstream/weathering_model/particle_weathering_300123/solution2pH.m src/shim
 
 | | pH relation | Calcite ceiling | Purpose |
 |---|---|---|---|
-| **E0** | buffered | buffered | The published configuration — validates the harness |
+| **E0** | buffered | buffered | The published configuration to validate our extension |
 
-A companion repo (`beerling-2025-analysis`) uses the **E1** and **E2** experiments, 
+A companion repo (`b25-analysis`) uses the **E1** and **E2** experiments, 
 but these do not require new runs. They are postprocessed on E0.
 
 ## Status
@@ -48,5 +47,8 @@ published model**.
 - Published outputs — Zenodo [14755423](https://doi.org/10.5281/zenodo.14755423), not vendored
 - Data Files S1–S6 — Nature SI, not vendored
 
-Large binaries in `upstream/` are git-ignored; `upstream/MANIFEST.sha256` keeps
-them verifiable and [how-to-run.md](how-to-run.md) says how to restore them.
+## License
+This work is licensed under the MIT license.
+
+## About us
+CarbonPlan is a nonprofit organization that uses data and science for climate action. We aim to improve the transparency and scientific integrity of climate solutions with open data and tools. Find out more at [carbonplan.org](https://carbonplan.org/) or get in touch by [opening an issue](https://github.com/carbonplan/b25-model-extension/issues/new) or [sending us an email](mailto:hello@carbonplan.org).

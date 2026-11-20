@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Compare a run_site() result against the published per-cell outputs.
 
-This is the E0 validation. It answers one question: does our harness reproduce
+This is the E0 validation. It addresses whether our harness can reproduce
 the numbers in Zenodo 14755423 for the same driver cluster, feedstock and
-deployment year?
+deployment year.
 
 Units, traced through the model so the comparison is like-for-like:
 
@@ -11,8 +11,7 @@ Units, traced through the model so the comparison is like-for-like:
   run_simple4.m:85     C_molperl = 1000*outflow_t./mol_mass   % "mols per m^2"
 
 so CO2_mass is grams CO2 per m^2, cumulative, on a monthly grid. 1 g/m^2 =
-0.01 t/ha. The check that this is right: Application_Basalt_mass is
-b_mass*1000*floor(t+1) = 4000 g/m^2/yr, which is the 40 t/ha/yr the paper applies.
+0.01 t/ha. 
 
 The published side is cumulative tCO2 per cell divided by the cell's area in ha.
 Cells in the same cluster with the same source state are identical per hectare to

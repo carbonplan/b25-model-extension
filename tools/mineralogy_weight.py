@@ -3,13 +3,10 @@
 
 The published outputs carry three columns per scenario, N1/N2/N3, and N2 is
 exactly (N1+N3)/2. The natural reading -- that N1 and N3 are simply the two
-per-state mineralogy runs -- does not survive contact with the data: the
-published relative half-width (N3-N1)/2N2 is 0.12-0.34 for every source state,
-while the stoichiometric difference between the two clusters ranges over a factor
-of 40 (Connecticut's two mineralogies are 0.4% apart yet carry a +-33% envelope).
-So N1/N3 are a constructed confidence band, not the raw pair.
+per-state mineralogy runs -- does not seem to hold against the data. Instead
+N1/N3 are a constructed confidence band, not the raw pair.
 
-What the raw pair does explain is N2. Given our own runs of cluster _1 and _2 at
+The raw pair is used to calculate N2. Given our own runs of cluster _1 and _2 at
 the same driver point, feedstock state and start year, this solves
 
     N2(t) = w * run_1(t) + (1 - w) * run_2(t)
@@ -131,9 +128,7 @@ def main():
 
     # Cross-check against the Extended Data Fig. 3a sample counts. w is the
     # fraction of that state's rock analyses in cluster 1, so it is knowable
-    # without running anything -- see data/mineralogy_cluster_counts.csv and
-    # scratch-results.md S6. A mismatch here means either the harness has drifted
-    # or the transcription is wrong; both are worth knowing immediately.
+    # without running anything -- see data/mineralogy_cluster_counts.csv 
     counts = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                           "..", "data", "mineralogy_cluster_counts.csv")
     predicted = None
